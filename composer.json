@@ -1,9 +1,15 @@
 {
     "name": "hexlet/code",
+    "description": "Generate difference between files",
+    "license": "None",
     "autoload": {
         "psr-4": {
-            "Hexlet\\Code\\": "src/"
-        }
+            "Php\\Project\\": "src/"
+        },
+        "files": [
+            "src/startApp.php",
+            "src/outputDocs.php"
+        ]
     },
     "authors": [
         {
