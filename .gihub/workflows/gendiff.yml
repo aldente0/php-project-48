@@ -1,0 +1,12 @@
+name: gendiff
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+      - run: composer install
+      - run: make lint
+      - run: bin/gendiff -f
+      - run: bin/gendiff file1.json file2.json
