@@ -8,7 +8,7 @@ use function Differ\Differ\genDiff;
 function startApp(): void
 {
     $first = $_SERVER['argv'][1];
-    $second = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : null;
+    $second = $_SERVER['argv'][2] ?? null;
 
     match ($first) {
         '-h' => outputDocs(),
