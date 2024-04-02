@@ -12,26 +12,23 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
     $file2 = file_get_contents($pathToFile2, true);
     $data2 = json_decode($file2, true);
 
-    $data3 = array_merge($data2, $data1);
-    ksort($data3);
+    $added = array_diff($data2,$data1);// Добавлено
+    $removed = array_diff($data1,$data2);// Убрано
+    $merged = array_merge($data2, $data1);
+    ksort($merged);
 
-    foreach ($data3 as $key => $val) {
-        if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-            $diff = implode("\n", [$diff, "  + {$key}: {$val}"]);
-        }
-
-        if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
+    foreach ($merged as $key => $val) {
+        if (isset($removed[$key])) {
             $diff = implode("\n", [$diff, "  - {$key}: {$val}"]);
         }
 
-        if ((array_key_exists($key, $data1) && array_key_exists($key, $data2)) && $data1[$key] == $data2[$key]) {
-            $diff = implode("\n", [$diff, "    {$key}: {$val}"]);
-        }
-
-        if ((array_key_exists($key, $data1) && array_key_exists($key, $data2)) && $data1[$key] != $data2[$key]) {
+        if (isset($added[$key])) {
             $newData = $data2[$key];
-            $diff = implode("\n", [$diff, "  - {$key}: {$val}"]);
             $diff = implode("\n", [$diff, "  + {$key}: {$newData}"]);
+        }
+
+        if (! isset($added[$key]) && ! isset($removed[$key])) {
+            $diff = implode("\n", [$diff, "    {$key}: {$val}"]);
         }
     }
 
