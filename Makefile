@@ -12,3 +12,6 @@ lint:
 
 format:
 	composer exec --verbose phpcbf -- --standard=PSR12 src bin
+
+test:
+	composer exec --verbose phpunit tests

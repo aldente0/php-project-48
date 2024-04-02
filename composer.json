@@ -4,9 +4,11 @@
     "license": "None",
     "autoload": {
         "psr-4": {
-            "Differ\\Differ\\": "src/"
+            "Differ\\Differ\\": "src/",
+            "Differ\\Tests\\" : "tests/"
         },
         "files": [
+            "tests/GenDiffTest.php",
             "src/Cli.php",
             "src/outputDocs.php",
             "src/genDiff.php"
@@ -23,6 +25,7 @@
         "lstrojny/functional-php": "^1.17"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.9"
+        "squizlabs/php_codesniffer": "^3.9",
+        "phpunit/phpunit": "^10.5"
     }
 }

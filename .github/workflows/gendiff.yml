@@ -8,4 +8,4 @@ jobs:
       - uses: shivammathur/setup-php@v2
       - run: composer install
       - run: make lint
-      - run: php test/test.php
+      - run: make test
