@@ -8,5 +8,4 @@ jobs:
       - uses: shivammathur/setup-php@v2
       - run: composer install
       - run: make lint
-      - run: bin/gendiff -h
-      - run: bin/gendiff file1.json file2.json
+      - run: php test/test.php
