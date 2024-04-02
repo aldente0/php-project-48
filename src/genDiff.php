@@ -6,11 +6,8 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
 {
     $diff = '{';
 
-    $file1 = file_get_contents($pathToFile1, true);
-    $data1 = json_decode($file1, true);
-
-    $file2 = file_get_contents($pathToFile2, true);
-    $data2 = json_decode($file2, true);
+    $data1 = json_decode(file_get_contents($pathToFile1), true) ?? [];
+    $data2 = json_decode(file_get_contents($pathToFile2), true) ?? [];
 
     $added = array_diff($data2, $data1);// Добавлено
     $removed = array_diff($data1, $data2);// Убрано
