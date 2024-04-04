@@ -44,7 +44,7 @@ function getFileData(string $filePath): array|object
 
     if ($fileExtension === 'json') {
         return json_decode(file_get_contents($filePath), true) ?? [];
-    } else if ($fileExtension === 'yml' || $fileExtension === 'yaml') {
+    } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {
         return Yaml::parseFile($filePath, /*Yaml::PARSE_OBJECT_FOR_MAP*/);
     } else {
         throw new \Exception("FormatError: unsupported file format .{$fileExtension}\n");
