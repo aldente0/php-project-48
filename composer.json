@@ -4,13 +4,14 @@
     "license": "None",
     "autoload": {
         "psr-4": {
-            "Differ\\Differ\\": "src/",
+            "Differ\\": "src/",
             "Differ\\Tests\\" : "tests/"
         },
         "files": [
             "tests/GenDiffTest.php",
             "src/outputDocs.php",
             "src/genDiff.php"
+            "src/genDiff.php",
         ]
     },
     "authors": [
