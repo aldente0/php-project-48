@@ -3,9 +3,10 @@
 namespace Differ\Differ;
 
 use Symfony\Component\Yaml\Yaml;
+
 use function Differ\Builder\buildDiffData;
 
-function genDiff(string $pathToFile1, string $pathToFile2, ): string|null
+function genDiff(string $pathToFile1, string $pathToFile2,): string|null
 {
     try {
         $data1 = getFileData($pathToFile1);

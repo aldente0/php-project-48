@@ -1,6 +1,7 @@
 <?php
 
 namespace Differ\Builder;
+
 function buildDiffData(array $data1, array $data2): array
 {
     $diffData = [];
