@@ -4,7 +4,7 @@ namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 use function Differ\Differ\genDiff;
-use function Differ\Differ\getFileData;
+use function Differ\Parser\parseFile;
 
 class GenDiffTest extends TestCase
 {
@@ -31,7 +31,7 @@ class GenDiffTest extends TestCase
             "host" => "hexlet.io",
             "about" => "test"
         ];
-        $this->assertEquals($expected1, getFileData($this->file1));
-        $this->assertEquals($expected2, getFileData($this->file2));
+        $this->assertTrue($expected1 == parseFile($this->file1));
+        $this->assertTrue($expected2 == parseFile($this->file2));
     }
 }

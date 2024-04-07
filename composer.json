@@ -10,7 +10,8 @@
         "files": [
             "tests/GenDiffTest.php",
             "src/genDiff.php",
-            "src/build.php"
+            "src/build.php",
+            "src/parse.php"
         ]
     },
     "authors": [

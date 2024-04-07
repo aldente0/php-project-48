@@ -2,15 +2,14 @@
 
 namespace Differ\Differ;
 
-use Symfony\Component\Yaml\Yaml;
-
 use function Differ\Builder\buildDiffData;
+use function Differ\Parser\parseFile;
 
 function genDiff(string $pathToFile1, string $pathToFile2,): string|null
 {
     try {
-        $data1 = getFileData($pathToFile1);
-        $data2 = getFileData($pathToFile2);
+        $data1 = parseFile($pathToFile1);
+        $data2 = parseFile($pathToFile2);
     } catch (\Exception $e) {
         print_r($e->getMessage());
         return null;
@@ -48,17 +47,4 @@ function genDiff(string $pathToFile1, string $pathToFile2,): string|null
     }
 
     return implode("\n", [$diff, '}']);
-}
-
-function getFileData(string $filePath): object
-{
-    $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-
-    if ($fileExtension === 'json') {
-        return json_decode(file_get_contents($filePath));
-    } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {
-        return Yaml::parseFile($filePath, Yaml::PARSE_OBJECT_FOR_MAP);
-    } else {
-        throw new \Exception("FormatError: unsupported file format .{$fileExtension}\n");
-    }
 }
