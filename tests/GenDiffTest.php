@@ -8,32 +8,24 @@ use function Differ\Differ\getFileData;
 
 class GenDiffTest extends TestCase
 {
-    public $file1 = 'filepath1.yml';
-    public $file2 = 'filepath2.yaml';
+    public $file1 = 'file1.json';
+    public $file2 = 'file2.json';
     public function testGenDiff(): void
     {
-        $expected = "{
-  + about: test
-  - follow: 
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: 1
-}";
+        $expected = file_get_contents('fixtures/simpleRes.txt', true);
 
-        $this->assertEquals($expected, genDiff('file1.json', 'file2.json'));
+        $this->assertEquals($expected, genDiff($this->file1, $this->file2));
     }
 
     public function testGetFileData(): void
     {
-        $expected1 = [
+        $expected1 = (object)[
             'host' => "hexlet.io",
             'timeout' => 50,
             'proxy' => "123.234.53.22",
             'follow' => false
         ];
-        $expected2 = [
+        $expected2 = (object) [
             "timeout" => 20,
             "verbose" => true,
             "host" => "hexlet.io",
