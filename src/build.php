@@ -7,7 +7,6 @@ function buildDiffData(array $data1, array $data2): array
     $diffData = [];
 
     foreach ($data1 as $key => $val) {
-
         if (! isset($data2[$key])) {
             $diffData[] = [
                 'name' => $key,
