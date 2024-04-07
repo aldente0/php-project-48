@@ -9,7 +9,6 @@
         },
         "files": [
             "tests/GenDiffTest.php",
-            "src/Cli.php",
             "src/outputDocs.php",
             "src/genDiff.php"
         ]
