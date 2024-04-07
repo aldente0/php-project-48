@@ -3,10 +3,10 @@
 namespace Differ\Differ;
 
 use Symfony\Component\Yaml\Yaml;
+use function Differ\Builder\buildDiffData;
 
-function genDiff(string $pathToFile1, string $pathToFile2): string|null
+function genDiff(string $pathToFile1, string $pathToFile2, ): string|null
 {
-    $diff = '{';
     try {
         $data1 = getFileData($pathToFile1);
         $data2 = getFileData($pathToFile2);
@@ -15,37 +15,48 @@ function genDiff(string $pathToFile1, string $pathToFile2): string|null
         return null;
     }
 
-    $added = array_diff($data2, $data1);
-    $removed = array_diff($data1, $data2);
-    $merged = array_merge($data2, $data1);
-    ksort($merged);
+    $diffData = buildDiffData(get_object_vars($data1), get_object_vars($data2));
 
-    foreach ($merged as $key => $val) {
-        if (isset($removed[$key])) {
-            $diff = implode("\n", [$diff, "  - {$key}: {$val}"]);
+    $diff = '{';
+
+    foreach ($diffData as $key => $data) {
+        if ($data['status'] === 'changed') {
+            $oldValue = $data['oldValue'];
+            $newValue = $data['newValue'];
+
+            $diff = implode("\n", [$diff, "  - {$key}: {$oldValue}"]);
+            $diff = implode("\n", [$diff, "  + {$key}: {$newValue}"]);
         }
 
-        if (isset($added[$key])) {
-            $newData = $data2[$key];
-            $diff = implode("\n", [$diff, "  + {$key}: {$newData}"]);
+        $value = $data['value'];
+        if (is_bool($value)) {
+            if ($value === true) {
+                $value = 'true';
+            } else {
+                $value = 'false';
+            }
         }
 
-        if (! isset($added[$key]) && ! isset($removed[$key])) {
-            $diff = implode("\n", [$diff, "    {$key}: {$val}"]);
+        if ($data['status'] === 'deleted') {
+            $diff = implode("\n", [$diff, "  - {$key}: {$value}"]);
+        } elseif ($data['status'] === 'added') {
+            $diff = implode("\n", [$diff, "  + {$key}: {$value}"]);
+        } elseif ($data['status'] === 'not changed') {
+            $diff = implode("\n", [$diff, "    {$key}: {$value}"]);
         }
     }
 
     return implode("\n", [$diff, '}']);
 }
 
-function getFileData(string $filePath): array|object
+function getFileData(string $filePath): object
 {
     $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
     if ($fileExtension === 'json') {
-        return json_decode(file_get_contents($filePath), true) ?? [];
+        return json_decode(file_get_contents($filePath));
     } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {
-        return Yaml::parseFile($filePath, /*Yaml::PARSE_OBJECT_FOR_MAP*/);
+        return Yaml::parseFile($filePath, Yaml::PARSE_OBJECT_FOR_MAP);
     } else {
         throw new \Exception("FormatError: unsupported file format .{$fileExtension}\n");
     }

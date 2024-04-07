@@ -9,9 +9,8 @@
         },
         "files": [
             "tests/GenDiffTest.php",
-            "src/outputDocs.php",
-            "src/genDiff.php"
             "src/genDiff.php",
+            "src/build.php"
         ]
     },
     "authors": [
