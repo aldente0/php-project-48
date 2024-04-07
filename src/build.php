@@ -7,18 +7,22 @@ function buildDiffData(array $data1, array $data2): array
     $diffData = [];
 
     foreach ($data1 as $key => $val) {
+
         if (! isset($data2[$key])) {
-            $diffData[$key] = [
+            $diffData[] = [
+                'name' => $key,
                 'value' => $val,
                 'status' => 'deleted'
             ];
         } elseif ($data2[$key] === $val) {
-            $diffData[$key] = [
+            $diffData[] = [
+                'name' => $key,
                 'value' => $val,
                 'status' => 'not changed'
             ];
         } else {
-            $diffData[$key] = [
+            $diffData[] = [
+                'name' => $key,
                 'oldValue' => $val,
                 'newValue' => $data2[$key],
                 'status' => 'changed'
@@ -28,13 +32,12 @@ function buildDiffData(array $data1, array $data2): array
 
     foreach ($data2 as $key => $val) {
         if (! isset($data1[$key])) {
-            $diffData[$key] = [
+            $diffData[] = [
+                'name' => $key,
                 'status' => 'added',
                 'value' => $val
             ];
         }
     }
-    ksort($diffData);
-
-    return $diffData;
+    return \Functional\sort($diffData, fn ($left, $right) => $left['name'] <=> $right['name']);
 }

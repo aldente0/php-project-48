@@ -19,13 +19,14 @@ function genDiff(string $pathToFile1, string $pathToFile2,): string|null
 
     $diff = '{';
 
-    foreach ($diffData as $key => $data) {
+    foreach ($diffData as $data) {
+        $name = $data['name'];
         if ($data['status'] === 'changed') {
             $oldValue = $data['oldValue'];
             $newValue = $data['newValue'];
 
-            $diff = implode("\n", [$diff, "  - {$key}: {$oldValue}"]);
-            $diff = implode("\n", [$diff, "  + {$key}: {$newValue}"]);
+            $diff = implode("\n", [$diff, "  - {$name}: {$oldValue}"]);
+            $diff = implode("\n", [$diff, "  + {$name}: {$newValue}"]);
         }
 
         $value = $data['value'];
@@ -38,11 +39,11 @@ function genDiff(string $pathToFile1, string $pathToFile2,): string|null
         }
 
         if ($data['status'] === 'deleted') {
-            $diff = implode("\n", [$diff, "  - {$key}: {$value}"]);
+            $diff = implode("\n", [$diff, "  - {$name}: {$value}"]);
         } elseif ($data['status'] === 'added') {
-            $diff = implode("\n", [$diff, "  + {$key}: {$value}"]);
+            $diff = implode("\n", [$diff, "  + {$name}: {$value}"]);
         } elseif ($data['status'] === 'not changed') {
-            $diff = implode("\n", [$diff, "    {$key}: {$value}"]);
+            $diff = implode("\n", [$diff, "    {$name}: {$value}"]);
         }
     }
 
