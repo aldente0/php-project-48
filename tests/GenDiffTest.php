@@ -8,8 +8,8 @@ use function Differ\Differ\getFileData;
 
 class GenDiffTest extends TestCase
 {
-    public $file1 = 'file1.json';
-    public $file2 = 'file2.json';
+    public string $file1 = 'tests/fixtures/file1.json';
+    public string $file2 = 'tests/fixtures/file2.json';
     public function testGenDiff(): void
     {
         $expected = file_get_contents('fixtures/simpleRes.txt', true);
