@@ -2,41 +2,57 @@
 
 namespace Differ\Builder;
 
-function buildDiffData(array $data1, array $data2): array
+use function Functional\sort;
+
+function buildDiffData(object $data1, object $data2): array
 {
+
+    $sortedKeys = sort(
+        array_unique(array_merge(array_keys(get_object_vars($data1)), array_keys(get_object_vars($data2)))),
+        fn ($left, $right) => $left <=> $right
+    );
+
     $diffData = [];
 
-    foreach ($data1 as $key => $val) {
-        if (! isset($data2[$key])) {
+    foreach ($sortedKeys as $key) {
+        if (! property_exists($data1, $key) && property_exists($data2, $key)) {
             $diffData[] = [
                 'name' => $key,
-                'value' => $val,
+                'value' => $data2->$key,
+                'status' => 'added'
+            ];
+        } elseif (property_exists($data1, $key) && ! property_exists($data2, $key)) {
+            $diffData[] = [
+                'name' => $key,
+                'value' => $data1->$key,
                 'status' => 'deleted'
             ];
-        } elseif ($data2[$key] === $val) {
-            $diffData[] = [
-                'name' => $key,
-                'value' => $val,
-                'status' => 'not changed'
-            ];
-        } else {
-            $diffData[] = [
-                'name' => $key,
-                'oldValue' => $val,
-                'newValue' => $data2[$key],
-                'status' => 'changed'
-            ];
+        } elseif (property_exists($data1, $key) && property_exists($data2, $key)) {
+            if (is_object($data1->$key) && is_object($data2->$key)) {
+                $diffData[] = [
+                    'name' => $key,
+                    'child' => buildDiffData($data1->$key, $data2->$key),
+                    'status' => 'nested'
+                ];
+                continue;
+            }
+
+            if ($data1->$key == $data2->$key) {
+                $diffData[] = [
+                    'name' => $key,
+                    'value' => $data1->$key,
+                    'status' => 'not changed'
+                ];
+            } else {
+                $diffData[] = [
+                    'name' => $key,
+                    'oldValue' => $data1->$key,
+                    'newValue' => $data2->$key,
+                    'status' => 'changed'
+                ];
+            }
         }
     }
 
-    foreach ($data2 as $key => $val) {
-        if (! isset($data1[$key])) {
-            $diffData[] = [
-                'name' => $key,
-                'status' => 'added',
-                'value' => $val
-            ];
-        }
-    }
-    return \Functional\sort($diffData, fn ($left, $right) => $left['name'] <=> $right['name']);
+    return $diffData;
 }

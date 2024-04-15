@@ -10,7 +10,6 @@ function parseFile(string $path): object
         $path = __DIR__ . "/../tests/fixtures/{$path}";
     }
     $fileExtension = pathinfo($path, PATHINFO_EXTENSION);
-
     if ($fileExtension === 'json') {
         return json_decode(file_get_contents($path));
     } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {

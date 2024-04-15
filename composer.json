@@ -5,9 +5,12 @@
     "autoload": {
         "psr-4": {
             "Differ\\": "src/",
-            "Differ\\Tests\\" : "tests/"
+            "Differ\\Tests\\" : "tests/",
+            "Differ\\Formatters\\": "src/Formatters"
         },
         "files": [
+            "src/format.php",
+            "src/Formatters/stylish.php",
             "tests/GenDiffTest.php",
             "src/genDiff.php",
             "src/build.php",
