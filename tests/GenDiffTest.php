@@ -8,30 +8,46 @@ use function Differ\Parser\parseFile;
 
 class GenDiffTest extends TestCase
 {
-    public string $file1 = 'tests/fixtures/file1.json';
-    public string $file2 = 'tests/fixtures/file2.json';
+    public string $file1 = 'tests/fixtures/filebigpath1.yml';
+    public string $file2 = 'tests/fixtures/filebigpath2.yaml';
     public function testGenDiff(): void
     {
         $expected = file_get_contents('fixtures/simpleRes.txt', true);
 
-        $this->assertEquals($expected, genDiff($this->file1, $this->file2));
+        $this->assertEquals($expected, genDiff('tests/fixtures/filebig1.json', 'tests/fixtures/filebig2.json'));
+        $this->assertEquals($expected, genDiff($this->file1, $this->file2, 'stylish'));
     }
 
     public function testGetFileData(): void
     {
-        $expected1 = (object)[
-            'host' => "hexlet.io",
-            'timeout' => 50,
-            'proxy' => "123.234.53.22",
-            'follow' => false
+        $expected1 = (object) [
+            "common" => (object) [
+                "setting1" => "Value 1",
+                "setting2" => 200,
+                "setting3" => true,
+                "setting6" => (object) [
+                            "key" => "value",
+                  "doge" => (object)[
+                        "wow" => ""
+                  ]
+                ]
+              ],
+              "group1" => (object) [
+                        "baz" => "bas",
+                "foo" => "bar",
+                "nest" => (object) [
+                            "key" => "value"
+                ]
+              ],
+              "group2" => (object) [
+                        "abc" => 12345,
+                "deep" => (object) [
+                        "id" => 45
+                ]
+              ]
         ];
-        $expected2 = (object) [
-            "timeout" => 20,
-            "verbose" => true,
-            "host" => "hexlet.io",
-            "about" => "test"
-        ];
+
+        $this->assertTrue($expected1 == parseFile('tests/fixtures/filebig1.json'));
         $this->assertTrue($expected1 == parseFile($this->file1));
-        $this->assertTrue($expected2 == parseFile($this->file2));
     }
 }

@@ -1,9 +1,4 @@
 {
-  test: [
-    1,
-    2,
-    4
-  ],
   common: {
     setting1: Value 1,
     setting2: 200,
@@ -11,7 +6,7 @@
     setting6: {
       key: value,
       doge: {
-        wow: 
+        wow: ''
       }
     }
   },
