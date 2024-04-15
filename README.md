@@ -16,4 +16,4 @@ php >= 8.1.2 to run games.
 
 ## Usage
 
-[![asciicast](https://asciinema.org/a/650835.svg)](https://asciinema.org/a/650835)
+[![asciicast](https://asciinema.org/a/654243.svg)](https://asciinema.org/a/654243)
