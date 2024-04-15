@@ -6,13 +6,11 @@ use function Functional\sort;
 
 function buildDiffData(object $data1, object $data2): array
 {
-
+    $diffData = [];
     $sortedKeys = sort(
         array_unique(array_merge(array_keys(get_object_vars($data1)), array_keys(get_object_vars($data2)))),
         fn ($left, $right) => $left <=> $right
     );
-
-    $diffData = [];
 
     foreach ($sortedKeys as $key) {
         if (! property_exists($data1, $key) && property_exists($data2, $key)) {
@@ -34,10 +32,7 @@ function buildDiffData(object $data1, object $data2): array
                     'child' => buildDiffData($data1->$key, $data2->$key),
                     'status' => 'nested'
                 ];
-                continue;
-            }
-
-            if ($data1->$key == $data2->$key) {
+            } elseif ($data1->$key == $data2->$key) {
                 $diffData[] = [
                     'name' => $key,
                     'value' => $data1->$key,
