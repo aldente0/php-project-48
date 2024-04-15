@@ -11,7 +11,6 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     try {
         $data1 = parseFile($pathToFile1);
         $data2 = parseFile($pathToFile2);
-        print_r($data1);
     } catch (\Exception $e) {
         print_r($e->getMessage());
         return null;
