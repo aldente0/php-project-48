@@ -3,43 +3,38 @@
 namespace Differ\Formatters;
 
 
-function plain($diffData, $row = '', $level = 1): string
+function plain($diffData, $row = '', $isFirstLevel = true): string
 {
     $result = '';
+
     foreach ($diffData as $data) {
         if ($data['status'] === 'not changed')
             continue;
 
         $row1 = $row ?: 'Property ';
         $name = $data['name'];
-        if ($level !== 1) {
+
+        if (!$isFirstLevel) {
             $row1 .= ".{$name}";
         } else {
             $row1 .= "'{$name}";
         }
+
         if ($data['status'] === 'nested') {
-
-
-            $row1 = plain($data['child'], $row1, 2);
-            $result = implode("", [$result, $row1]);
-            continue;
-        }
-
-        if ($data['status'] === 'changed') {
+            $row1 = plain($data['child'], $row1, false);
+        } else if ($data['status'] === 'changed') {
             $oldValue = toPlain($data['oldValue']);
             $newValue = toPlain($data['newValue']);
 
-            $row1 .= "' was updated. From {$oldValue} to $newValue\n";
-            $result = implode("", [$result, $row1]);
-            continue;
-        }
+            $row1 .= "' was updated. From {$oldValue} to $newValue\r\n";
+        } else {
+            $value = toPlain($data['value']);
 
-        $value = toPlain($data['value']);
-
-        if ($data['status'] === 'deleted') {
-            $row1 .= "' was removed.\n";
-        } elseif ($data['status'] === 'added') {
-            $row1 .= "' was added with value: {$value}\n";
+            if ($data['status'] === 'deleted') {
+                $row1 .= "' was removed\r\n";
+            } elseif ($data['status'] === 'added') {
+                $row1 .= "' was added with value: {$value}\r\n";
+            }
         }
 
         $result = implode("", [$result, $row1]);
