@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters;
 
-function plain($diffData, $row = '', $isFirstLevel = true): string
+function plain($diffData, $stringFromLastLevel = '', $isFirstLevel = true): string
 {
     $result = '';
 
@@ -11,7 +11,7 @@ function plain($diffData, $row = '', $isFirstLevel = true): string
             continue;
         }
 
-        $row1 = $row ?: 'Property ';
+        $row1 = $stringFromLastLevel ?: 'Property ';
         $name = $data['name'];
 
         if (!$isFirstLevel) {
