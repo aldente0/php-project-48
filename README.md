@@ -23,3 +23,7 @@ Only stylish format:
 Stylish and plain:
 
 [![asciicast](https://asciinema.org/a/665294.svg)](https://asciinema.org/a/665294)
+
+Json:
+
+[![asciicast](https://asciinema.org/a/665299.svg)](https://asciinema.org/a/665299)
