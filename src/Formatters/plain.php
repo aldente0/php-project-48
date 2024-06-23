@@ -26,14 +26,14 @@ function plain($diffData, $row = '', $isFirstLevel = true): string
             $oldValue = toPlain($data['oldValue']);
             $newValue = toPlain($data['newValue']);
 
-            $row1 .= "' was updated. From {$oldValue} to $newValue\r\n";
+            $row1 .= "' was updated. From {$oldValue} to $newValue\n";
         } else {
             $value = toPlain($data['value']);
 
             if ($data['status'] === 'deleted') {
-                $row1 .= "' was removed\r\n";
+                $row1 .= "' was removed\n";
             } elseif ($data['status'] === 'added') {
-                $row1 .= "' was added with value: {$value}\r\n";
+                $row1 .= "' was added with value: {$value}\n";
             }
         }
 
