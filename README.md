@@ -16,4 +16,10 @@ php >= 8.1.2 to run games.
 
 ## Usage
 
+Only stylish format:
+
 [![asciicast](https://asciinema.org/a/654243.svg)](https://asciinema.org/a/654243)
+
+Stylish and plain:
+
+[![asciicast](https://asciinema.org/a/665294.svg)](https://asciinema.org/a/665294)
