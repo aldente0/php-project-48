@@ -12,10 +12,12 @@ class GenDiffTest extends TestCase
     public string $file2 = 'tests/fixtures/filebigpath2.yaml';
     public function testGenDiff(): void
     {
-        $expected = file_get_contents('fixtures/simpleRes.txt', true);
+        $expected1 = file_get_contents('fixtures/simpleRes.txt', true);
+        $expected2 = file_get_contents('fixtures/plainRes.txt', true);
 
-        $this->assertEquals($expected, genDiff('tests/fixtures/filebig1.json', 'tests/fixtures/filebig2.json'));
-        $this->assertEquals($expected, genDiff($this->file1, $this->file2, 'stylish'));
+        $this->assertEquals($expected1, genDiff('tests/fixtures/filebig1.json', 'tests/fixtures/filebig2.json'));
+        $this->assertEquals($expected1, genDiff($this->file1, $this->file2, 'stylish'));
+        $this->assertEquals($expected2, genDiff($this->file1, $this->file2, 'plain'));
     }
 
     public function testGetFileData(): void

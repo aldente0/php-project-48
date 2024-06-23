@@ -9,8 +9,9 @@
             "Differ\\Formatters\\": "src/Formatters"
         },
         "files": [
-            "src/format.php",
+            "src/Formatters.php",
             "src/Formatters/stylish.php",
+            "src/Formatters/plain.php",
             "tests/GenDiffTest.php",
             "src/genDiff.php",
             "src/build.php",
