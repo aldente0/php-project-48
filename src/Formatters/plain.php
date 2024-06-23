@@ -2,14 +2,14 @@
 
 namespace Differ\Formatters;
 
-
 function plain($diffData, $row = '', $isFirstLevel = true): string
 {
     $result = '';
 
     foreach ($diffData as $data) {
-        if ($data['status'] === 'not changed')
+        if ($data['status'] === 'not changed') {
             continue;
+        }
 
         $row1 = $row ?: 'Property ';
         $name = $data['name'];
@@ -22,7 +22,7 @@ function plain($diffData, $row = '', $isFirstLevel = true): string
 
         if ($data['status'] === 'nested') {
             $row1 = plain($data['child'], $row1, false);
-        } else if ($data['status'] === 'changed') {
+        } elseif ($data['status'] === 'changed') {
             $oldValue = toPlain($data['oldValue']);
             $newValue = toPlain($data['newValue']);
 
