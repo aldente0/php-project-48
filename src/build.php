@@ -32,7 +32,7 @@ function buildDiffData(object $data1, object $data2): array
                     'child' => buildDiffData($data1->$key, $data2->$key),
                     'status' => 'nested'
                 ];
-            } elseif ($data1->$key == $data2->$key) {
+            } elseif ($data1->$key === $data2->$key) {
                 $diffData[] = [
                     'name' => $key,
                     'value' => $data1->$key,
