@@ -12,7 +12,7 @@ function stylish(array $diffData, int $level = 1): string
         $result = implode("\n", [$result, $spaces]);
         if ($data['status'] === 'nested') {
             $nested = stylish($data['child'], $level  + 1);
-            $result = rtrim(implode("", [$result, "    {$name}: {$nested}"]));
+            $result = implode("", [$result, "    {$name}: {$nested}"]);
             continue;
         }
 
@@ -28,8 +28,8 @@ function stylish(array $diffData, int $level = 1): string
                 $newValue = toString($newValue, $level + 1);
             }
 
-            $result = rtrim(implode("", [$result, "  - {$name}: {$oldValue}"]));
-            $result = rtrim(implode("\n", [$result, "{$spaces}  + {$name}: {$newValue}"]));
+            $result = implode("", [$result, "  - {$name}: {$oldValue}"]);
+            $result = implode("\n", [$result, "{$spaces}  + {$name}: {$newValue}"]);
             continue;
         }
 
@@ -38,13 +38,12 @@ function stylish(array $diffData, int $level = 1): string
             $value = toString($value, $level + 1);
         }
 
-
         if ($data['status'] === 'deleted') {
-            $result = rtrim(implode("", [$result, "  - {$name}: {$value}"]));
+            $result = implode("", [$result, "  - {$name}: {$value}"]);
         } elseif ($data['status'] === 'added') {
-            $result = rtrim(implode("", [$result, "  + {$name}: {$value}"]));
+            $result = implode("", [$result, "  + {$name}: {$value}"]);
         } elseif ($data['status'] === 'not changed') {
-            $result = rtrim(implode("", [$result, "    {$name}: {$value}"]));
+            $result = implode("", [$result, "    {$name}: {$value}"]);
         }
     }
 
