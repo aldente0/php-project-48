@@ -17,8 +17,8 @@ function stylish(array $diffData, int $level = 1): string
         }
 
         if ($data['status'] === 'changed') {
-            $oldValue = toString($data['oldValue'], $level + 1);
             $newValue = toString($data['newValue'], $level + 1);
+            $oldValue = toString($data['oldValue'], $level + 1);
 
             $result = implode("", [$result, "  - {$name}: {$oldValue}"]);
             $result = implode("\n", [$result, "{$spaces}  + {$name}: {$newValue}"]);
@@ -39,7 +39,7 @@ function stylish(array $diffData, int $level = 1): string
     return implode("\n", [$result, "{$spaces}}"]);
 }
 
-function toString(array|object|bool|null $data, int $level = 1): string
+function toString($data, int $level = 1): string
 {
     if (is_object($data)) {
         return toStringObject($data, $level);
@@ -50,7 +50,7 @@ function toString(array|object|bool|null $data, int $level = 1): string
     } elseif ($data === false) {
         return "false";
     } elseif (is_null($data)) {
-        return 'null';
+        return "null";
     }
 
     return (string) $data;
