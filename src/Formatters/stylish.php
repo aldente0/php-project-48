@@ -17,26 +17,15 @@ function stylish(array $diffData, int $level = 1): string
         }
 
         if ($data['status'] === 'changed') {
-            $oldValue = $data['oldValue'];
-            $newValue = $data['newValue'];
-
-            if (is_bool($oldValue) || is_null($oldValue) || is_object($oldValue) || is_array($oldValue)) {
-                $oldValue = toString($oldValue, $level + 1);
-            }
-
-            if (is_bool($newValue) || is_null($newValue) || is_object($newValue) || is_array($newValue)) {
-                $newValue = toString($newValue, $level + 1);
-            }
+            $oldValue = toString($data['oldValue'], $level + 1);
+            $newValue = toString($data['newValue'], $level + 1);
 
             $result = implode("", [$result, "  - {$name}: {$oldValue}"]);
             $result = implode("\n", [$result, "{$spaces}  + {$name}: {$newValue}"]);
             continue;
         }
 
-        $value = $data['value'];
-        if (is_bool($value) || is_null($value) || is_object($value) || is_array($value)) {
-            $value = toString($value, $level + 1);
-        }
+        $value = toString($data['value'], $level + 1);
 
         if ($data['status'] === 'deleted') {
             $result = implode("", [$result, "  - {$name}: {$value}"]);
@@ -60,9 +49,11 @@ function toString(array|object|bool|null $data, int $level = 1): string
         return "true";
     } elseif ($data === false) {
         return "false";
+    } elseif (is_null($data)) {
+        return 'null';
     }
 
-    return "null";
+    return (string) $data;
 }
 
 function toStringObject(object $data, $level = 1): string
