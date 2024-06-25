@@ -53,7 +53,9 @@ function toPlain($data): string
         return "false";
     } elseif (is_string($data)) {
         return "'" . $data . "'";
+    } elseif (is_null($data)) {
+        return 'null';
     }
 
-    return 'null';
+    return (string) $data;
 }
