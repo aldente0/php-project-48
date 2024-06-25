@@ -7,6 +7,6 @@ function format(array $diffData, string $format): string
     return match ($format) {
         default => \Differ\Formatters\stylish($diffData),
         'plain' => \Differ\Formatters\plain($diffData),
-        'json' => json_encode($diffData)
+        'json' => \Differ\Formatters\json($diffData)
     };
 }
