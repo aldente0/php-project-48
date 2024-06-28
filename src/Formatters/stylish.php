@@ -6,40 +6,37 @@ function stylish(array $diffData, int $level = 1): string
 {
     $result = '{';
     $spaces = str_repeat('    ', $level - 1);
-
-    foreach ($diffData as $data) {
+    $result = array_reduce($diffData, function ($res, $data) use ($spaces, $level) {
         $name = $data['name'];
-        $result = implode("\n", [$result, $spaces]);
+        $res = implode("\n", [$res, $spaces]);
         if ($data['status'] === 'nested') {
             $nested = stylish($data['child'], $level  + 1);
-            $result = implode("", [$result, "    {$name}: {$nested}"]);
-            continue;
+            return implode("", [$res, "    {$name}: {$nested}"]);
         }
 
         if ($data['status'] === 'changed') {
-            $newValue = toString($data['newValue'], $level + 1);
-            $oldValue = toString($data['oldValue'], $level + 1);
+            $newValue = toStylish($data['newValue'], $level + 1);
+            $oldValue = toStylish($data['oldValue'], $level + 1);
 
-            $result = implode("", [$result, "  - {$name}: {$oldValue}"]);
-            $result = implode("\n", [$result, "{$spaces}  + {$name}: {$newValue}"]);
-            continue;
+            $res = implode("", [$res, "  - {$name}: {$oldValue}"]);
+            return implode("\n", [$res, "{$spaces}  + {$name}: {$newValue}"]);
         }
 
-        $value = toString($data['value'], $level + 1);
+        $value = toStylish($data['value'], $level + 1);
 
         if ($data['status'] === 'deleted') {
-            $result = implode("", [$result, "  - {$name}: {$value}"]);
+            return implode("", [$res, "  - {$name}: {$value}"]);
         } elseif ($data['status'] === 'added') {
-            $result = implode("", [$result, "  + {$name}: {$value}"]);
-        } elseif ($data['status'] === 'not changed') {
-            $result = implode("", [$result, "    {$name}: {$value}"]);
+            return implode("", [$res, "  + {$name}: {$value}"]);
+        } else {
+            return implode("", [$res, "    {$name}: {$value}"]);
         }
-    }
+    }, $result);
 
     return implode("\n", [$result, "{$spaces}}"]);
 }
 
-function toString($data, int $level = 1): string
+function toStylish($data, int $level = 1): string
 {
     if (is_object($data)) {
         return toStringObject($data, $level);
@@ -66,7 +63,7 @@ function toStringObject(object $data, $level = 1): string
         $value = $data->$key;
         $string = implode("\n", [ $string, "{$spaces}    {$key}: "]);
         if (is_object($value) || is_array($value)) {
-            $string = implode("", [$string, toString($value, $level + 1)]);
+            $string = implode("", [$string, toStylish($value, $level + 1)]);
         } else {
             $string = rtrim(implode("", [$string, "{$value}"]));
         }
@@ -82,7 +79,7 @@ function toStringArray(array $data, int $level = 1): string
 
     foreach ($data as $value) {
         if (is_object($value) || is_array($value)) {
-            $string = toString($value, $level + 1);
+            $string = toStylish($value, $level + 1);
         } else {
             $string = rtrim(implode("\n", [ $string, "{$spaces}    {$value},"]));
         }
