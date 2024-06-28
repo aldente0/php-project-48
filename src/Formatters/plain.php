@@ -15,7 +15,7 @@ function plain($diffData, $stringFromLastLevel = '', $isFirstLevel = true): stri
         if (!$isFirstLevel) {
             $row = implode('.', [$row, $name]);
         } else {
-            $row = implode('', [$row, "'{$name}"]);
+            $row = implode("'", [$row, "{$name}"]);
         }
 
         if ($data['status'] === 'nested') {
