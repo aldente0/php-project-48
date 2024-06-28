@@ -17,6 +17,5 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     }
 
     $diffData = buildDiffData($data1, $data2);
-
     return format($diffData, $format);
 }
