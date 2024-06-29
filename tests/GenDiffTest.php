@@ -3,6 +3,7 @@
 namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function Differ\Differ\genDiff;
 use function Differ\Parser\parseFile;
 
@@ -30,25 +31,25 @@ class GenDiffTest extends TestCase
                 "setting2" => 200,
                 "setting3" => true,
                 "setting6" => (object) [
-                            "key" => "value",
-                  "doge" => (object)[
+                    "key" => "value",
+                    "doge" => (object)[
                         "wow" => ""
-                  ]
+                    ]
                 ]
-              ],
-              "group1" => (object) [
-                        "baz" => "bas",
+            ],
+            "group1" => (object) [
+                "baz" => "bas",
                 "foo" => "bar",
                 "nest" => (object) [
-                            "key" => "value"
+                    "key" => "value"
                 ]
-              ],
-              "group2" => (object) [
-                        "abc" => 12345,
+            ],
+            "group2" => (object) [
+                "abc" => 12345,
                 "deep" => (object) [
-                        "id" => 45
+                    "id" => 45
                 ]
-              ]
+            ]
         ];
 
         $this->assertTrue($expected1 == parseFile('tests/fixtures/filebig1.json'));
