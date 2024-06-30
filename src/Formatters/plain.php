@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters;
 
-function plain($diffData, $stringFromLastLevel = '', $isFirstLevel = true): string
+function plain(array $diffData, string $stringFromLastLevel = '', bool $isFirstLevel = true): string
 {
     return array_reduce($diffData, function ($res, $data) use ($stringFromLastLevel, $isFirstLevel) {
         if ($data['status'] === 'not changed') {
@@ -13,33 +13,33 @@ function plain($diffData, $stringFromLastLevel = '', $isFirstLevel = true): stri
         $name = $data['name'];
 
         if (!$isFirstLevel) {
-            $row = implode('.', [$row, $name]);
+            $namedRow = implode('.', [$row, $name]);
         } else {
-            $row = implode("'", [$row, "{$name}"]);
+            $namedRow = implode("'", [$row, "{$name}"]);
         }
 
         if ($data['status'] === 'nested') {
-            $row = plain($data['child'], $row, false);
+            $rowWithValue = plain($data['child'], $namedRow, false);
         } elseif ($data['status'] === 'changed') {
             $oldValue = toPlain($data['oldValue']);
             $newValue = toPlain($data['newValue']);
 
-            $row = implode("'", [$row, " was updated. From {$oldValue} to $newValue\n"]);
+            $rowWithValue = implode("'", [$namedRow, " was updated. From {$oldValue} to $newValue\n"]);
         } else {
             $value = toPlain($data['value']);
 
             if ($data['status'] === 'deleted') {
-                $row = implode("'", [$row, " was removed\n"]);
-            } elseif ($data['status'] === 'added') {
-                $row = implode("'", [$row, " was added with value: {$value}\n"]);
+                $rowWithValue = implode("'", [$namedRow, " was removed\n"]);
+            } else {
+                $rowWithValue = implode("'", [$namedRow, " was added with value: {$value}\n"]);
             }
         }
 
-        return implode("", [$res, $row]);
+        return implode("", [$res, $rowWithValue]);
     }, '');
 }
 
-function toPlain($data): string
+function toPlain(mixed $data): string
 {
     if (is_object($data) || is_array($data)) {
         return '[complex value]';
