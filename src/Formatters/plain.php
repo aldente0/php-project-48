@@ -9,7 +9,7 @@ function plain(array $diffData, string $stringFromLastLevel = '', bool $isFirstL
             return $res;
         }
 
-        $row = $stringFromLastLevel ?: 'Property ';
+        $row = $stringFromLastLevel ? $stringFromLastLevel : 'Property ';
         $name = $data['name'];
 
         if (!$isFirstLevel) {
