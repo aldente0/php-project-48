@@ -42,16 +42,18 @@ function plain(array $diffData, string $stringFromLastLevel = '', bool $isFirstL
 function toPlain(mixed $data): string
 {
     if (is_object($data) || is_array($data)) {
-        return '[complex value]';
+        $plainText = '[complex value]';
     } elseif ($data === true) {
-        return "true";
+        $plainText = "true";
     } elseif ($data === false) {
-        return "false";
+        $plainText = "false";
     } elseif (is_string($data)) {
-        return implode("'", ['', $data, '']);
+        $plainText = implode("'", ['', $data, '']);
     } elseif (is_null($data)) {
-        return 'null';
+        $plainText = 'null';
+    } else {
+        $plainText = (string) $data;
     }
 
-    return (string) $data;
+    return $plainText;
 }

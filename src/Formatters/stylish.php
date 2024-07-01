@@ -12,42 +12,44 @@ function stylish(array $diffData, int $level = 1): string
         $resWithSpaces = implode("\n", [$res, $spaces]);
         if ($data['status'] === 'nested') {
             $nested = stylish($data['child'], $level  + 1);
-            return implode("", [$resWithSpaces, "    {$name}: {$nested}"]);
-        }
-
-        if ($data['status'] === 'changed') {
+            $resWithValue = implode("", [$resWithSpaces, "    {$name}: {$nested}"]);
+        } elseif ($data['status'] === 'changed') {
             $newValue = toStylish($data['newValue'], $level + 1);
             $oldValue = toStylish($data['oldValue'], $level + 1);
-            return implode("\n", ["$resWithSpaces  - {$name}: {$oldValue}", "{$spaces}  + {$name}: {$newValue}"]);
-        }
-
-        $value = toStylish($data['value'], $level + 1);
-
-        if ($data['status'] === 'deleted') {
-            return implode("", [$resWithSpaces, "  - {$name}: {$value}"]);
-        } elseif ($data['status'] === 'added') {
-            return implode("", [$resWithSpaces, "  + {$name}: {$value}"]);
+            $resWithValue = implode("\n", ["$resWithSpaces  - {$name}: {$oldValue}", "{$spaces}  + {$name}: {$newValue}"]);
         } else {
-            return implode("", [$resWithSpaces, "    {$name}: {$value}"]);
+            $value = toStylish($data['value'], $level + 1);
+
+            if ($data['status'] === 'deleted') {
+                $resWithValue = implode("", [$resWithSpaces, "  - {$name}: {$value}"]);
+            } elseif ($data['status'] === 'added') {
+                $resWithValue = implode("", [$resWithSpaces, "  + {$name}: {$value}"]);
+            } else {
+                $resWithValue = implode("", [$resWithSpaces, "    {$name}: {$value}"]);
+            }
         }
+
+        return $resWithValue;
     }, $result), "{$spaces}}"]);
 }
 
 function toStylish(mixed $data, int $level = 1): string
 {
     if (is_object($data)) {
-        return toStringObject($data, $level);
+        $stylishVal = toStringObject($data, $level);
     } elseif (is_array($data)) {
-        return toStringArray($data, $level);
+        $stylishVal = toStringArray($data, $level);
     } elseif ($data === true) {
-        return "true";
+        $stylishVal = "true";
     } elseif ($data === false) {
-        return "false";
+        $stylishVal = "false";
     } elseif (is_null($data)) {
-        return "null";
+        $stylishVal = "null";
+    } else {
+        $stylishVal = (string) $data;
     }
 
-    return (string) $data;
+    return $stylishVal;
 }
 
 function toStringObject(object $data, int $level = 1): string
