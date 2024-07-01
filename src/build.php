@@ -18,45 +18,25 @@ function buildDiffData(object $data1, object $data2): array
                 'value' => $data2->$key,
                 'status' => 'added'
             ]];
-            /*array_push($acc, [
-                'name' => $key,
-                'value' => $data2->$key,
-                'status' => 'added'
-            ]);*/
         } elseif (property_exists($data1, $key) && ! property_exists($data2, $key)) {
             $newAcc = [...$acc, [
                 'name' => $key,
                 'value' => $data1->$key,
                 'status' => 'deleted'
             ]];
-            /*array_push($acc, [
-                'name' => $key,
-                'value' => $data1->$key,
-                'status' => 'deleted'
-            ]);*/
-        } else /*if (property_exists($data1, $key) && property_exists($data2, $key))*/ {
+        } else {
             if (is_object($data1->$key) && is_object($data2->$key)) {
                 $newAcc = [...$acc, [
                     'name' => $key,
                     'child' => buildDiffData($data1->$key, $data2->$key),
                     'status' => 'nested'
                 ]];
-                /*array_push($acc, [
-                    'name' => $key,
-                    'child' => buildDiffData($data1->$key, $data2->$key),
-                    'status' => 'nested'
-                ]);*/
             } elseif ($data1->$key === $data2->$key) {
                 $newAcc = [...$acc, [
                     'name' => $key,
                     'value' => $data1->$key,
                     'status' => 'not changed'
                 ]];
-                /*array_push($acc, [
-                    'name' => $key,
-                    'value' => $data1->$key,
-                    'status' => 'not changed'
-                ]);*/
             } else {
                 $newAcc = [...$acc, [
                     'name' => $key,
@@ -64,12 +44,6 @@ function buildDiffData(object $data1, object $data2): array
                     'newValue' => $data2->$key,
                     'status' => 'changed'
                 ]];
-                /*array_push($acc, [
-                    'name' => $key,
-                    'oldValue' => $data1->$key,
-                    'newValue' => $data2->$key,
-                    'status' => 'changed'
-                ]);*/
             }
         }
 
