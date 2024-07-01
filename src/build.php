@@ -34,7 +34,7 @@ function buildDiffData(object $data1, object $data2): array
                 'value' => $data1->$key,
                 'status' => 'deleted'
             ]);*/
-        } else/*if (property_exists($data1, $key) && property_exists($data2, $key))*/ {
+        } else /*if (property_exists($data1, $key) && property_exists($data2, $key))*/ {
             if (is_object($data1->$key) && is_object($data2->$key)) {
                 $newAcc = [...$acc, [
                     'name' => $key,
