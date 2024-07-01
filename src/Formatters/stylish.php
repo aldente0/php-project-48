@@ -16,7 +16,8 @@ function stylish(array $diffData, int $level = 1): string
         } elseif ($data['status'] === 'changed') {
             $newValue = toStylish($data['newValue'], $level + 1);
             $oldValue = toStylish($data['oldValue'], $level + 1);
-            $resWithValue = implode("\n",
+            $resWithValue = implode(
+                "\n",
                 ["$resWithSpaces  - {$name}: {$oldValue}", "{$spaces}  + {$name}: {$newValue}"]
             );
         } else {
